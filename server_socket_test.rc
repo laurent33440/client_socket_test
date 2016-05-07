@@ -13,13 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// French (France) resources
+// Français (France) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
-#ifdef _WIN32
 LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
 #pragma code_page(1252)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -66,6 +64,7 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\server_socket_test.ico"
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Dialog
@@ -77,11 +76,12 @@ EXSTYLE WS_EX_APPWINDOW
 CAPTION "server_socket_test"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "Démarrer le serveur",ID_START_SERVER,216,7,97,16
-    PUSHBUTTON      "Quitter et arréter le serveur",ID_QUIT,216,60,98,16
-    CTEXT           "Démarrer le serveur en écoute sur le port 20000",IDC_STATIC,12,12,180,8
+    DEFPUSHBUTTON   "Démarrer le serveur",ID_START_SERVER,216,30,97,16
+    PUSHBUTTON      "Quitter et arréter le serveur",ID_QUIT,215,70,98,16
+    LTEXT           "Choisir le port sur lequel écoute le serveur (port 20000 par défaut)",IDC_STATIC,6,6,222,8
     LISTBOX         IDC_DATA_LIST_FROM_CLIENT,24,96,282,96,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Données reçues des clients",IDC_STATIC,24,78,162,12
+    COMBOBOX        IDC_COMBO_PORT_LIST,6,18,80,42,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
 END
 
 
@@ -130,7 +130,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_SERVER_SOCKET_TEST_DIALOG, DIALOG
     BEGIN
@@ -145,15 +145,33 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_SERVER_SOCKET_TEST_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDP_SOCKETS_INIT_FAILED "L'initialisation des sockets Windows a échoué."
 END
 
-#endif    // French (France) resources
+STRINGTABLE
+BEGIN
+    IDS_STRING120           "20000"
+    IDS_STRING121           "30000"
+    IDS_STRING122           "40000"
+END
+
+#endif    // Français (France) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

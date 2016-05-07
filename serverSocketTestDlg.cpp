@@ -26,6 +26,7 @@ void CserverSocketTestDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX,ID_START_SERVER, m_buttonStartServer);
 	DDX_Control(pDX, IDC_DATA_LIST_FROM_CLIENT,  m_dataListFromClient);
+	DDX_Control(pDX, IDC_COMBO_PORT_LIST, m_portList);
 }
 
 BEGIN_MESSAGE_MAP(CserverSocketTestDlg, CDialog)
@@ -34,6 +35,7 @@ BEGIN_MESSAGE_MAP(CserverSocketTestDlg, CDialog)
 	ON_BN_CLICKED(ID_QUIT, &CserverSocketTestDlg::OnBnClickedQuit)
 	ON_BN_CLICKED(ID_START_SERVER, &CserverSocketTestDlg::OnBnClickedStartServer)
 	//}}AFX_MSG_MAP
+	ON_CBN_SELCHANGE(IDC_COMBO_PORT_LIST, &CserverSocketTestDlg::OnCbnSelchangeComboPortList)
 END_MESSAGE_MAP()
 
 
@@ -49,7 +51,9 @@ BOOL CserverSocketTestDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Définir une petite icône
 
 	// TODO : ajoutez ici une initialisation supplémentaire
-
+	InitComboBox(m_portList, IDS_STRING120, 3);
+	//init port number
+	OnCbnSelchangeComboPortList();
 	return TRUE;  // retourne TRUE, sauf si vous avez défini le focus sur un contrôle
 }
 
@@ -100,8 +104,8 @@ void CserverSocketTestDlg::OnBnClickedQuit()
 
 void CserverSocketTestDlg::OnBnClickedStartServer()
 {
-	int nPort = 20000;
-	m_socketServer.Create(nPort);
+	WORD port = atoi(m_currentPort);
+	m_socketServer.Create(port);
 	m_socketServer.Listen();
 	m_buttonStartServer.SetWindowText(_T("Serveur démarré..."));
 
@@ -109,3 +113,38 @@ void CserverSocketTestDlg::OnBnClickedStartServer()
 
 }
 
+void CserverSocketTestDlg::OnCbnSelchangeComboPortList()
+{
+	// TODO: ajoutez ici le code de votre gestionnaire de notification de contrôle
+	m_portList.GetLBText(m_portList.GetCurSel(), m_currentPort);
+}
+
+void CserverSocketTestDlg::InitComboBox(CComboBox& combo, DWORD refList, byte numberItem)
+{
+	//fill combo
+	CString str;
+	for (int i = 0; i<numberItem; i++)
+	{
+		str.LoadString(refList + i);
+		combo.AddString(str);
+	}
+	combo.SetCurSel(0);
+	//Adjust size
+	CDC* pDC = combo.GetDC();
+	CSize sz;
+	int newWidth = 0;
+	int nWidth = combo.GetDroppedWidth();
+
+	for (int i = 0; i < combo.GetCount(); i++)
+	{
+		combo.GetLBText(i, str);
+		sz = pDC->GetTextExtent(str);
+		if (sz.cx > newWidth)
+			newWidth = sz.cx;
+	}
+	// Add allowance for vertical scroll bar and edges
+	newWidth += (GetSystemMetrics(SM_CXVSCROLL) + 2 * GetSystemMetrics(SM_CXEDGE));
+	nWidth = max(nWidth, newWidth);
+	combo.SetDroppedWidth(nWidth);
+	combo.ReleaseDC(pDC);
+}

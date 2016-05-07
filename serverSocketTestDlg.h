@@ -16,6 +16,7 @@ public:
 
 // Données de boîte de dialogue
 	enum { IDD = IDD_SERVER_SOCKET_TEST_DIALOG };
+	CComboBox m_portList;
 	CButton m_buttonStartServer;
 	CListBox m_dataListFromClient;
 
@@ -24,8 +25,11 @@ public:
 
 private:
 	CSocketServer m_socketServer; 
+	CString m_currentPort;
 
 // Implémentation
+private:
+	void InitComboBox(CComboBox& combo, DWORD refList, byte numberItem);
 protected:
 	HICON m_hIcon;
 
@@ -35,5 +39,7 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg void OnBnClickedQuit();
 	afx_msg void OnBnClickedStartServer();
+	afx_msg void OnCbnSelchangeComboPortList();
 	DECLARE_MESSAGE_MAP()
+	
 };
